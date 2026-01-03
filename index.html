@@ -16,11 +16,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
             font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
         }
         h1 {
-            color: #ffd700;
+            color: #cc0000;
             margin-bottom: 20px;
             font-size: 2.5rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
@@ -30,9 +30,9 @@
             width: 400px;
             height: 600px;
             overflow: hidden;
-            border: 4px solid #ffd700;
+            border: 4px solid #cc0000;
             border-radius: 10px;
-            background: #fff;
+            background: #111;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -73,7 +73,7 @@
         }
         #progress-fill {
             height: 100%;
-            background: #ffd700;
+            background: #cc0000;
             width: 0%;
             transition: width 0.1s;
         }
@@ -91,7 +91,8 @@
             margin-top: 20px;
             padding: 15px 40px;
             font-size: 1.2rem;
-            background: #ffd700;
+            background: #cc0000;
+            color: #fff;
             border: none;
             border-radius: 30px;
             cursor: pointer;
@@ -100,7 +101,7 @@
         }
         #start-btn:hover:not(:disabled) {
             transform: scale(1.05);
-            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 5px 20px rgba(204, 0, 0, 0.4);
         }
         #start-btn:disabled {
             background: #888;
@@ -110,8 +111,8 @@
             animation: glow 0.5s ease-in-out infinite alternate;
         }
         @keyframes glow {
-            from { box-shadow: 0 0 10px #ffd700; }
-            to { box-shadow: 0 0 30px #ffd700; }
+            from { box-shadow: 0 0 10px #cc0000; }
+            to { box-shadow: 0 0 30px #cc0000; }
         }
     </style>
 </head>

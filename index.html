@@ -25,10 +25,13 @@
             font-size: 2.5rem;
         }
         #top-section {
-            display: flex;
+            display: none;
             flex-direction: column;
             align-items: center;
             margin-bottom: 20px;
+        }
+        #top-section.visible {
+            display: flex;
         }
         #roulette-container {
             position: relative;
@@ -143,6 +146,7 @@
         const message = document.getElementById('message');
         const container = document.getElementById('roulette-container');
         const loadingSection = document.getElementById('loading-section');
+        const topSection = document.getElementById('top-section');
         const progressFill = document.getElementById('progress-fill');
         const progressText = document.getElementById('progress-text');
 
@@ -151,15 +155,30 @@
         let currentIndex = 0;
 
         // Preload all images
+        let processedCount = 0;
         for (let i = 1; i <= totalImages; i++) {
             const img = new Image();
-            img.onload = img.onerror = () => {
+            img.onload = () => {
                 loadedCount++;
-                progressFill.style.width = (loadedCount / totalImages * 100) + '%';
-                progressText.textContent = `${loadedCount} / ${totalImages}`;
+                processedCount++;
+                progressFill.style.width = (processedCount / totalImages * 100) + '%';
+                progressText.textContent = `${processedCount} / ${totalImages}`;
 
-                if (loadedCount === totalImages) {
+                if (processedCount === totalImages) {
                     loadingSection.classList.add('hidden');
+                    topSection.classList.add('visible');
+                    startBtn.disabled = false;
+                    message.textContent = 'ボタンを押してスタート！';
+                }
+            };
+            img.onerror = () => {
+                processedCount++;
+                progressFill.style.width = (processedCount / totalImages * 100) + '%';
+                progressText.textContent = `${processedCount} / ${totalImages}`;
+
+                if (processedCount === totalImages) {
+                    loadingSection.classList.add('hidden');
+                    topSection.classList.add('visible');
                     startBtn.disabled = false;
                     message.textContent = 'ボタンを押してスタート！';
                 }

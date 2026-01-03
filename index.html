@@ -16,14 +16,19 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
+            background: #fff;
             font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
         }
         h1 {
             color: #cc0000;
             margin-bottom: 20px;
             font-size: 2.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        #top-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
         }
         #roulette-container {
             position: relative;
@@ -32,7 +37,7 @@
             overflow: hidden;
             border: 4px solid #cc0000;
             border-radius: 10px;
-            background: #111;
+            background: #fff;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -53,12 +58,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(255,255,255,0.95);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #fff;
+            color: #000;
         }
         #loading-overlay.hidden {
             display: none;
@@ -66,7 +71,7 @@
         #progress-bar {
             width: 80%;
             height: 20px;
-            background: #333;
+            background: #ddd;
             border-radius: 10px;
             overflow: hidden;
             margin-top: 15px;
@@ -82,13 +87,13 @@
             font-size: 1.2rem;
         }
         #message {
-            margin-top: 20px;
+            margin-bottom: 15px;
             font-size: 1.5rem;
-            color: #fff;
+            color: #000;
             text-align: center;
         }
         #start-btn {
-            margin-top: 20px;
+            margin-bottom: 0;
             padding: 15px 40px;
             font-size: 1.2rem;
             background: #cc0000;
@@ -118,6 +123,10 @@
 </head>
 <body>
     <h1>おみくじ</h1>
+    <div id="top-section">
+        <p id="message">読み込み中...</p>
+        <button id="start-btn" disabled>スタート</button>
+    </div>
     <div id="roulette-container">
         <img id="roulette-image" src="" alt="おみくじ">
         <div id="loading-overlay">
@@ -128,8 +137,6 @@
             <div id="progress-text">0 / 480</div>
         </div>
     </div>
-    <p id="message">読み込み中...</p>
-    <button id="start-btn" disabled>スタート</button>
 
     <script>
         const totalImages = 480;

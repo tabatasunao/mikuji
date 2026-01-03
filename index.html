@@ -51,24 +51,19 @@
         #roulette-image.visible {
             visibility: visible;
         }
-        #loading-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.95);
+        #loading-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 50px;
             color: #000;
         }
-        #loading-overlay.hidden {
+        #loading-section.hidden {
             display: none;
         }
         #progress-bar {
-            width: 80%;
+            width: 300px;
             height: 20px;
             background: #ddd;
             border-radius: 10px;
@@ -126,15 +121,15 @@
         <p id="message">読み込み中...</p>
         <button id="start-btn" disabled>スタート</button>
     </div>
+    <div id="loading-section">
+        <div>読み込み中...</div>
+        <div id="progress-bar">
+            <div id="progress-fill"></div>
+        </div>
+        <div id="progress-text">0 / 480</div>
+    </div>
     <div id="roulette-container">
         <img id="roulette-image" src="" alt="おみくじ">
-        <div id="loading-overlay">
-            <div>読み込み中...</div>
-            <div id="progress-bar">
-                <div id="progress-fill"></div>
-            </div>
-            <div id="progress-text">0 / 480</div>
-        </div>
     </div>
 
     <script>
@@ -147,7 +142,7 @@
         const startBtn = document.getElementById('start-btn');
         const message = document.getElementById('message');
         const container = document.getElementById('roulette-container');
-        const loadingOverlay = document.getElementById('loading-overlay');
+        const loadingSection = document.getElementById('loading-section');
         const progressFill = document.getElementById('progress-fill');
         const progressText = document.getElementById('progress-text');
 
@@ -164,7 +159,7 @@
                 progressText.textContent = `${loadedCount} / ${totalImages}`;
 
                 if (loadedCount === totalImages) {
-                    loadingOverlay.classList.add('hidden');
+                    loadingSection.classList.add('hidden');
                     startBtn.disabled = false;
                     message.textContent = 'ボタンを押してスタート！';
                 }

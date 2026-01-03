@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>おみくじ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
+        }
+        h1 {
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        #roulette-container {
+            position: relative;
+            width: 400px;
+            height: 600px;
+            overflow: hidden;
+            border: 4px solid #ffd700;
+            border-radius: 10px;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #roulette-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            visibility: hidden;
+        }
+        #roulette-image.visible {
+            visibility: visible;
+        }
+        #loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+        #loading-overlay.hidden {
+            display: none;
+        }
+        #progress-bar {
+            width: 80%;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        #progress-fill {
+            height: 100%;
+            background: #ffd700;
+            width: 0%;
+            transition: width 0.1s;
+        }
+        #progress-text {
+            margin-top: 10px;
+            font-size: 1.2rem;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #fff;
+            text-align: center;
+        }
+        #start-btn {
+            margin-top: 20px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            background: #ffd700;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        #start-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+        #start-btn:disabled {
+            background: #888;
+            cursor: not-allowed;
+        }
+        .spinning #roulette-container {
+            animation: glow 0.5s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 10px #ffd700; }
+            to { box-shadow: 0 0 30px #ffd700; }
+        }
+    </style>
+</head>
+<body>
+    <h1>おみくじ</h1>
+    <div id="roulette-container">
+        <img id="roulette-image" src="" alt="おみくじ">
+        <div id="loading-overlay">
+            <div>読み込み中...</div>
+            <div id="progress-bar">
+                <div id="progress-fill"></div>
+            </div>
+            <div id="progress-text">0 / 480</div>
+        </div>
+    </div>
+    <p id="message">読み込み中...</p>
+    <button id="start-btn" disabled>スタート</button>
+
+    <script>
+        const totalImages = 480;
+        const imageFolder = 'complete_small/';
+        const images = [];
+        let loadedCount = 0;
+
+        const rouletteImage = document.getElementById('roulette-image');
+        const startBtn = document.getElementById('start-btn');
+        const message = document.getElementById('message');
+        const container = document.getElementById('roulette-container');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+
+        let isSpinning = false;
+        let intervalId = null;
+        let currentIndex = 0;
+
+        // Preload all images
+        for (let i = 1; i <= totalImages; i++) {
+            const img = new Image();
+            img.onload = img.onerror = () => {
+                loadedCount++;
+                progressFill.style.width = (loadedCount / totalImages * 100) + '%';
+                progressText.textContent = `${loadedCount} / ${totalImages}`;
+
+                if (loadedCount === totalImages) {
+                    loadingOverlay.classList.add('hidden');
+                    startBtn.disabled = false;
+                    message.textContent = 'ボタンを押してスタート！';
+                }
+            };
+            img.src = `${imageFolder}combined_${i}.jpg`;
+            images.push(img);
+        }
+
+        function spin() {
+            currentIndex = Math.floor(Math.random() * totalImages);
+            rouletteImage.src = images[currentIndex].src;
+        }
+
+        function startSpin() {
+            if (isSpinning) {
+                // Stop
+                clearInterval(intervalId);
+                isSpinning = false;
+                document.body.classList.remove('spinning');
+                startBtn.textContent = 'もう一度';
+                message.textContent = '結果が出ました！';
+            } else {
+                // Start
+                isSpinning = true;
+                rouletteImage.classList.add('visible');
+                document.body.classList.add('spinning');
+                startBtn.textContent = 'ストップ';
+                message.textContent = 'クリックして止めてね！';
+                intervalId = setInterval(spin, 50);
+            }
+        }
+
+        startBtn.addEventListener('click', startSpin);
+        container.addEventListener('click', () => {
+            if (isSpinning) startSpin();
+        });
+    </script>
+</body>
+</html>

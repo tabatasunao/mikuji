@@ -1,0 +1,5 @@
+# Large original files - only push compressed ones
+complete/
+kichi/
+koaza/
+*.py
